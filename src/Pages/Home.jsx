@@ -1,8 +1,10 @@
 import '../Components/Hero/Hero.css';
 import Images from "../assets/logo/image.png";
-import Rice from "../assets/Rice.png";
-import Spices from "../assets/Spices.png";
+import Mango from "../assets/products/mango/alphonsomango.png";
+import vegetables from "../assets/products/vegetables/tinda.png";
+import background from "../assets/background.png";
 import logo from "../assets/logo/logo.png";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   return (
@@ -32,14 +34,14 @@ const Body = () => {
             We have Expertise in the Field of Exports buy understanding the needs of our buyers and suppliers. We Ensure the Quality of product, Packaging and Trust of of valued customers for variety of products that is fulfilled by us.
           </p>
           <p>
-            Our Motto is "We Believe in Quality"  
+            Our Motto is "We Believe in Quality"
           </p>
           <button className="learn-more-btn"><a href="#/About">Learn More...</a></button>
         </div>
       </div>
 
 
-    <h1 className="wy-choose-us">Why choose Us</h1>
+      <h1 className="wy-choose-us">Why choose Us</h1>
       <div className="card-main">
         <div className="card">
           <div className="icon">
@@ -148,50 +150,50 @@ const Body = () => {
 
       </div >
 
-    <div className="products-section">
-      <h1 className="prdts-fd-h1">Featured Products</h1>
+      <div className="products-section">
+        <h1 className="prdts-fd-h1">Featured Products</h1>
 
-      <div className="prdts-fd">
-        {/* Card 1 */}
-        <div className="prdts-fd-cards fruits">
-          <img src="" alt="Mango" />
-          <div className="prdts-content">
-            <h3>Fruits</h3>
-            <h2>Premium Alphonso Mangoes</h2>
-            <p>Sweet and juicy Alphonso mangoes</p>
-            <a href="#/Product" className="view-details">
-              View More →
-            </a>
+        <div className="prdts-fd">
+          {/* Card 1 */}
+          <div className="prdts-fd-cards fruits">
+            <img src={Mango} alt="Mango" />
+            <div className="prdts-content">
+              <h3>Mango</h3>
+              <h2>Premium Alphonso Mangoes</h2>
+              <p>Sweet and juicy Alphonso mangoes</p>
+              <Link to="/product/401" className="view-details">
+                View More →
+              </Link>
+            </div>
           </div>
-        </div>
 
-        {/* Card 2 */}
-        <div className="prdts-fd-cards spices">
-          <img src={Spices} alt="Spices" />
-          <div className="prdts-content">
-            <h3>Spices</h3>
-            <h2>Organic Turmeric</h2>
-            <p>Premium organic turmeric powder</p>
-            <a href="#/Product" className="view-details">
-              View More →
-            </a>
+          {/* Card 2 */}
+          <div className="prdts-fd-cards spices">
+            <img src={vegetables} alt="Spices" />
+            <div className="prdts-content">
+              <h3>Vegetables</h3>
+              <h2>Fresh Premium Vegetables</h2>
+              <p>Fresh, export-grade vegetables.</p>
+              <Link to="/Product/114" className="view-details">
+                View More →
+              </Link>
+            </div>
           </div>
-        </div>
 
-        {/* Card 3 */}
-        <div className="prdts-fd-cards rice">
-          <img src={Rice} alt="Rice" />
-          <div className="prdts-content">
-            <h3>Rice</h3>
-            <h2>Premium Basmati Rice</h2>
-            <p>Aged premium basmati rice</p>
-            <a href="#/Product" className="view-details">
-              View More →
-            </a>
+          {/* Card 3 */}
+          <div className="prdts-fd-cards rice">
+            <img src={background} alt="Rice" />
+            <div className="prdts-content">
+              <h3>View More</h3>
+              <h2>Explore All Products</h2>
+              <p>Explore our full range of export-quality items.</p>
+              <Link to="/product" className="view-details">
+                View Products →
+              </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
 
   );
