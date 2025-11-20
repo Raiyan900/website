@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import productsData from '../../Components/Data/ProductData';
 import ProductCard from '../../Components/ProductCard/ProductCard';
 import './Product.css';
@@ -26,6 +26,9 @@ export default function Products() {
   const endIndex = startIndex + productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage, selectedCategory]);
   const goToNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };

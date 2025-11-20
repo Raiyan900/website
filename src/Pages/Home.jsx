@@ -1,9 +1,8 @@
 import '../Components/Hero/Hero.css';
-import Images from "../assets/image.png";
-import Mango from "../assets/Mango.png";
+import Images from "../assets/logo/image.png";
 import Rice from "../assets/Rice.png";
 import Spices from "../assets/Spices.png";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo/logo.png";
 
 const Body = () => {
   return (
@@ -155,7 +154,7 @@ const Body = () => {
       <div className="prdts-fd">
         {/* Card 1 */}
         <div className="prdts-fd-cards fruits">
-          <img src={Mango} alt="Mango" />
+          <img src="" alt="Mango" />
           <div className="prdts-content">
             <h3>Fruits</h3>
             <h2>Premium Alphonso Mangoes</h2>

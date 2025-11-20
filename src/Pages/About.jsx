@@ -1,10 +1,10 @@
 import '../Components/Aboutcss/About.css';
-import logo from "../assets/logo.png";
-import farm from "../assets/farm.png";
-import packhouse from "../assets/packhouse.png";
-import airpot from "../assets/airpot.png";
-import imports from "../assets/imports.png";
-import Customer from "../assets/customer.png";
+import logo from "../assets/logo/logo.png";
+import farm from "../assets/images/Farm.png";
+import packhouse from "../assets/images/packhouse.png";
+import airport from "../assets/images/airport.png";
+import importer from "../assets/images/import.png";
+import customer from "../assets/images/customer.png";
 
 export default function About() {
   return (
@@ -55,21 +55,21 @@ export default function About() {
           </div>
 
           <div class="supplychain-card">
-            <img src={airpot} alt="Airport" />
+            <img src={airport} alt="Airport" />
             <div class="icon"><i class="fa-solid fa-plane-departure"></i></div>
             <h3>Airport</h3>
             <p>Temperature-controlled air transport</p>
           </div>
 
           <div class="supplychain-card">
-            <img src={imports} alt="Importer" />
+          <img src={importer} alt="Importer" />
             <div class="icon"><i class="fa-solid fa-building"></i></div>
             <h3>Importer</h3>
             <p>Trusted partners in destination countries</p>
           </div>
 
           <div class="supplychain-card">
-            <img src={Customer} alt="Customer" />
+            <img src={customer} alt="Customer" />
             <div class="icon"><i class="fa-solid fa-cart-shopping"></i></div>
             <h3>Customer</h3>
             <p>Fresh produce for consumers worldwide</p>
