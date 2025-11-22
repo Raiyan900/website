@@ -1,82 +1,97 @@
-import React, { useEffect,useState } from 'react';
-import productsData from '../../Components/Data/ProductData';
-import ProductCard from '../../Components/ProductCard/ProductCard';
-import './Product.css';
+import { useState, useMemo } from "react";
+import ProductCard from "../../Components/ProductCard/ProductCard";
+import productsData from "../../Components/Data/ProductData";
+import "./Product.css";
 
 export default function Products() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("All");
+  const [page, setPage] = useState(1);
 
-  const productsPerPage = 9;
-  const categories = [
-    "All",
-    "Fruits",
-    "Mangos",
-    "Spices",
-    "Vegetables",
-  ];
+  const pageSize = 8;
 
-  const filteredProducts =
-    selectedCategory === "All"
-      ? productsData
-      : productsData.filter((p) => p.category === selectedCategory);
+  // All categories
+  const categories = ["All", ...new Set(productsData.map(p => p.category))];
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const endIndex = startIndex + productsPerPage;
-  const currentProducts = filteredProducts.slice(startIndex, endIndex);
+  // Search + filter
+  const filteredProducts = productsData.filter(p => {
+    const q = query.toLowerCase();
+    const matchesSearch =
+      p.name.toLowerCase().includes(q) ||
+      p.shortDescription.toLowerCase().includes(q);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [currentPage, selectedCategory]);
-  const goToNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-  };
-  const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(currentPage - 1);
-  };
-  const handleCategoryChange = (cat) => {
-    setSelectedCategory(cat);
-    setCurrentPage(1);
-  };
+    const matchesCategory =
+      category === "All" || p.category === category;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  // Pagination
+  const totalPages = Math.ceil(filteredProducts.length / pageSize);
+  const paginatedProducts = filteredProducts.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
 
   return (
-    <div className="products-container">
-      <h1>Our Export Products</h1>
+    <main className="products-page">
+      <h1 className="page-title">Our Products</h1>
 
-      <div className="category-filter">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            className={selectedCategory === cat ? "active-cat" : ""}
-            onClick={() => handleCategoryChange(cat)}
-          >
-            {cat}
-          </button>
-        ))}
+      {/* Toolbar */}
+      <div className="products-toolbar">
+        <input
+          className="search-input"
+          placeholder="Search products..."
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setPage(1);
+          }}
+        />
+
+        <select
+          className="category-select"
+          value={category}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setPage(1);
+          }}
+        >
+          {categories.map((c) => (
+            <option key={c}>{c}</option>
+          ))}
+        </select>
       </div>
 
-      {/* PRODUCT GRID */}
+      {/* Product Grid */}
       <div className="products-grid">
-        {currentProducts.map((product) => (
+        {paginatedProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
-      {/* PAGINATION */}
+      {/* Pagination */}
       <div className="pagination">
-        <button onClick={goToPreviousPage} disabled={currentPage === 1}>
-          ⬅ Prev
+        <button
+          className="page-btn"
+          onClick={() => setPage(page - 1)}
+          disabled={page === 1}
+        >
+          Prev
         </button>
 
-        <span>
-          Page {currentPage} of {totalPages}
+        <span className="page-status">
+          Page {page} of {totalPages}
         </span>
 
-        <button onClick={goToNextPage} disabled={currentPage === totalPages}>
-          Next ➡
+        <button
+          className="page-btn"
+          onClick={() => setPage(page + 1)}
+          disabled={page === totalPages}
+        >
+          Next
         </button>
       </div>
-    </div>
+    </main>
   );
 }

@@ -1,16 +1,24 @@
-import React from 'react';
 import { Link } from "react-router-dom";
-import './ProductCards.css';
+import "./ProductCards.css";
 
-export default function ProductCards({ product }) {
+export default function ProductCard({ product }) {
   return (
-    <Link to={`/product/${product.id}`} className="productCard">
-      <div className="card">
-        <img src={product.image} alt={product.name} />
-        <h4 className="category">{product.category}</h4>
-        <h3>{product.name}</h3>
-        <p>{product.shortDescription}</p>
+    <article className="product-card" aria-label={product.name}>
+      <div className="product-media">
+        <img src={product.image} alt={product.name} loading="lazy" className="product-image"/>
       </div>
-    </Link>
+
+      <div className="product-body">
+        <h3 className="product-title">{product.name}</h3>
+        <p className="product-short">{product.shortDescription}</p>
+        <div className="product-meta">
+          <span className="product-badge">{product.category}</span>
+        </div>
+
+        <Link to={`/product/${product.id}`} className="view-btn-link">
+          <button className="view-btn" type="button">View More</button>
+        </Link>
+      </div>
+    </article>
   );
 }

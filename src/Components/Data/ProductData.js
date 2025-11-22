@@ -1,11 +1,11 @@
-import fruitsData from "./FruitsData";
-import vegetablesData from "./VegetablesData";
-import MangoData from "./MangoData";  
+import fruits from "./fruits.js";
+import vegetables from "./vegetables.js";
+import mango from "./mango.js";
 
-const productsData = [
-  ...fruitsData,
-  ...vegetablesData,
-  ...MangoData
+const allProducts = [
+  ...fruits,
+  ...vegetables,
+  ...mango
 ];
-  
-export default productsData;
+
+export default allProducts;
