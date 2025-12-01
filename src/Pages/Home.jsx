@@ -268,8 +268,8 @@ const Body = () => {
             </Swiper>
 
             <div className="prdts-nav">
-              <div className="prdts-prev">←</div>
-              <div className="prdts-next">→</div>
+              <div className="prdts-prev"><p>🡰</p></div>
+              <div className="prdts-next"><p>🡲</p></div>
             </div>
 
           </div>

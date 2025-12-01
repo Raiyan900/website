@@ -417,9 +417,10 @@
   background: var(--accent);
 }
 
+
 .prdts-prev {
   position: absolute;
-  left: 0;
+  left: 1080px;
   width: 55px;
   height: 55px;
   border-radius: 50%;
@@ -427,7 +428,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: 28px;
   color: var(--primary);
   cursor: pointer;
 }
@@ -442,7 +443,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: 28px;
   color: var(--primary);
   cursor: pointer;
 }
