@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/website/static/css/main.94b70791.css",
-    "main.js": "/website/static/js/main.7ae69561.js",
+    "main.css": "/website/static/css/main.b7d44ef3.css",
+    "main.js": "/website/static/js/main.46ce6b72.js",
     "static/js/453.d6ad4dea.chunk.js": "/website/static/js/453.d6ad4dea.chunk.js",
     "static/media/fruits_video.mp4": "/website/static/media/fruits_video.b3b8a2d7fdf59009a678.mp4",
     "static/media/customer.png": "/website/static/media/customer.b1bf071515c9ede083c3.png",
@@ -52,12 +52,12 @@
     "static/media/JALEBIIMLI.jpg": "/website/static/media/JALEBIIMLI.62c33f0f09c6ee3ff6dc.jpg",
     "static/media/CURRYBANANA.jpg": "/website/static/media/CURRYBANANA.b6e9ae4b8f41e6b11599.jpg",
     "index.html": "/website/index.html",
-    "main.94b70791.css.map": "/website/static/css/main.94b70791.css.map",
-    "main.7ae69561.js.map": "/website/static/js/main.7ae69561.js.map",
+    "main.b7d44ef3.css.map": "/website/static/css/main.b7d44ef3.css.map",
+    "main.46ce6b72.js.map": "/website/static/js/main.46ce6b72.js.map",
     "453.d6ad4dea.chunk.js.map": "/website/static/js/453.d6ad4dea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.94b70791.css",
-    "static/js/main.7ae69561.js"
+    "static/css/main.b7d44ef3.css",
+    "static/js/main.46ce6b72.js"
   ]
 }
