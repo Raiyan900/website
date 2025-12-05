@@ -1,97 +1,284 @@
-import Swal from 'sweetalert2'
-import "../Components/style/contact.css";
-import { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { Mail, Phone, MapPin, Check, AlertCircle } from "lucide-react";
+import "../Components/style/contact.css"
+
+const API_URL = "http://localhost:3001/api/contact";
+// const API_URL = "/.netlify/functions/sendEmail";
 
 export default function Contact() {
-  const [result, setResult] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    businessName: "",
+    email: "",
+    contact: "",
+    productInterest: "",
+    message: "",
+  });
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    formData.append("access_key", "59544c84-5c0f-4bed-99a6-8eefb9dd033a");
+  const [status, setStatus] = useState({
+    submitted: false,
+    success: false,
+    message: "",
+  });
 
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData
-    });
+  const [loading, setLoading] = useState(false);
+  const [serverStatus, setServerStatus] = useState("unknown");
 
-    const data = await response.json();
-    setResult(data.success ? Swal.fire({
-      title: "Success!",
-      text: "Message Sended successfully!",
-      icon: "success"
-    }) : "Error");
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (response.ok) setServerStatus("online");
+        else setServerStatus("error");
+      } catch {
+        setServerStatus("offline");
+      }
+    };
+
+    checkServer();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (serverStatus === "offline") {
+      setStatus({
+        submitted: true,
+        success: false,
+        message:
+          "The email server is offline. Please try again later or contact us directly.",
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setFormData({
+          name: "",
+          businessName: "",
+          email: "",
+          contact: "",
+          productInterest: "",
+          message: "",
+        });
+
+        setStatus({
+          submitted: true,
+          success: true,
+          message: data.message || "Message sent successfully!",
+        });
+      } else {
+        throw new Error(data.message || "Failed to send message");
+      }
+    } catch (error) {
+      setStatus({
+        submitted: true,
+        success: false,
+        message: error.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleDirectEmail = () => {
+    const subject = encodeURIComponent(`Message from: ${formData.name}`);
+    const body = encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    window.location.href = `mailto:sales.raiyanglobal@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
-    <div className="cont-continer-page">
-      <div className='contact'>
-        <div class="contact-section">
-          <h1>Contact Us</h1>
+    <div className="contact-container">
+      <h2 className="title">Contact Us</h2>
 
-          <div class="contact-container">
-            <div class="contact-form">
-              <h2>Get in Touch</h2>
+      <div className="contact-grid">
+        {/* LEFT SIDE */}
+        <div>
+          <h3 className="subtitle">Get in Touch</h3>
 
-              <form onSubmit={onSubmit}>
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>Name</label>
-                    <input type="text" placeholder="Enter your name" name='name' />
-                  </div>
-                  <div class="form-group">
-                    <label>Business Name</label>
-                    <input type="text" placeholder="Enter business name" name='business name' />
-                  </div>
-                </div>
-
-                <div class="form-row">
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" placeholder="Enter your email" name='email' />
-                  </div>
-                  <div class="form-group">
-                    <label>Contact Number</label>
-                    <input type="tel" placeholder="Enter contact number" name='number' />
-                  </div>
-                </div>
-
-                <div class="form-group full">
-                  <label>Product Interest</label>
-                  <input type="text" placeholder="Enter product name or type" name='Product Interest' />
-                </div>
-
-                <div class="form-group full">
-                  <label>Message</label>
-                  <textarea rows="5" placeholder="Write your message" name='message'></textarea>
-                </div>
-
-                <button type="submit" class="send-btn">Send Message</button>
-              </form>
+          {serverStatus === "offline" && !status.submitted && (
+            <div className="alert alert-warning">
+              <AlertCircle size={20} />
+              <p>Server offline — your message will be sent manually.</p>
             </div>
+          )}
 
-            <div class="contact-info">
-              <h2>Contact Information</h2>
+          {/* STATUS MESSAGE */}
+          {status.submitted ? (
+            <div
+              className={`alert ${
+                status.success ? "alert-success" : "alert-error"
+              }`}
+            >
+              {status.success ? <Check size={20} /> : <AlertCircle size={20} />}
+              <p>{status.message}</p>
 
-              <p><i class="fa-solid fa-location-dot"></i>
-                E-3, Gulshan CHS, Versova, Andheri (West), Mumbai: 400061, Maharashtra, India
-              </p>
+              {status.success && (
+                <button
+                  className="link-btn"
+                  onClick={() =>
+                    setStatus({ submitted: false, success: false, message: "" })
+                  }
+                >
+                  Send another message
+                </button>
+              )}
 
-              <p><i class="fa-solid fa-phone"></i> +91 59562629</p>
-              <p><i class="fa-solid fa-phone"></i> +91 25926255</p>
+              {!status.success && serverStatus === "offline" && (
+                <button className="offline-btn" onClick={handleDirectEmail}>
+                  Send via Email App
+                </button>
+              )}
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="form">
+              <div className="form-row">
+                <div className="input-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-              <p><i class="fa-solid fa-envelope"></i> sales.raiyanglobal@gmail.com</p>
+                <div className="input-group">
+                  <label>Business Name</label>
+                  <input
+                    type="text"
+                    name="businessName"
+                    value={formData.businessName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
 
-              <h2>Business Hours</h2>
-              <ul class="business-hours">
-                <li><strong className='p2'>Monday - Friday:</strong> 9:00 AM - 6:00 PM</li>
-                <li><strong className='p2'>Saturday:</strong> 10:00 AM - 4:00 PM</li>
-                <li><strong className='p2'>Sunday:</strong> Closed</li>
-              </ul>
+              <div className="form-row">
+                <div className="input-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="input-group">
+                  <label>Contact Number</label>
+                  <input
+                    type="tel"
+                    name="contact"
+                    value={formData.contact}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="input-group">
+                <label>Product Interest</label>
+                <input
+                  type="text"
+                  name="productInterest"
+                  value={formData.productInterest}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="input-group">
+                <label>Message</label>
+                <textarea
+                  name="message"
+                  rows="4"
+                  value={formData.message}
+                  onChange={handleChange}
+                ></textarea>
+              </div>
+
+              <button className="submit-btn" disabled={loading}>
+                {loading ? "Sending..." : "Send Message"}
+              </button>
+
+              {serverStatus === "offline" && (
+                <button className="offline-btn" onClick={handleDirectEmail}>
+                  Open Email App
+                </button>
+              )}
+            </form>
+          )}
+
+          <p className="info-note">
+            We'll respond as soon as possible. For urgent requests, call us.
+          </p>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div>
+          <h3 className="subtitle">Contact Information</h3>
+
+          <div className="info-block">
+            <MapPin className="icon" />
+            <div>
+              <h4>Address</h4>
+              <p>E-3, Gulshan CHS, Versova, Andheri West, Mumbai 400061</p>
+            </div>
+          </div>
+
+          <div className="info-block">
+            <Phone className="icon" />
+            <div>
+              <h4>Phone</h4>
+              <p>+91 59562629</p>
+              <p>+91 25926255</p>
+            </div>
+          </div>
+
+          <div className="info-block">
+            <Mail className="icon" />
+            <div>
+              <h4>Email</h4>
+              <p>sales.raiyanglobal@gmail.com</p>
+            </div>
+          </div>
+
+          <div className="hours-box">
+            <h3 className="subtitle">Business Hours</h3>
+            <div className="hours-row">
+              <span className="titles1">Mon–Fri:</span>
+              <span>9:00 AM – 6:00 PM</span>
+            </div>
+            <div className="hours-row">
+              <span className="titles1">Saturday:</span>
+              <span>10:00 AM – 4:00 PM</span>
+            </div>
+            <div className="hours-row">
+              <span className="titles1">Sunday:</span>
+              <span>Closed</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
